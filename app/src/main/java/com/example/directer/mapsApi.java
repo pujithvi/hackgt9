@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,10 +45,13 @@ import java.security.KeyException;
 import java.util.*;
 
 
-public class mapsApi extends AppCompatActivity {
+public class mapsApi extends AppCompatActivity{
 
     private List<Map.Entry<String, ArrayList<Integer>>> list;
-    public Object doInBackground (Object[] params) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    public List<Map.Entry<String, ArrayList<Integer>>> doInBackground (Object[] params) {
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyD0e_AjT0xXkIjPu3VswknGPL62DVSp4oI")
                 .build();
@@ -105,31 +109,10 @@ public class mapsApi extends AppCompatActivity {
             System.out.println(list.get(i));
         }
         context.shutdown();
-        Intent display_list = new Intent(this, Hospital_Lister.class);
-        String[] names_list = new String[list.size()];
-        int[] travel_time = new int[list.size()];
-        int[] wait_time = new int[list.size()];
-        int[] total_time = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            names_list[i] = list.get(i).getKey();
-            travel_time[i] = list.get(i).getValue().get(0);
-            wait_time[i] = list.get(i).getValue().get(1);
-            total_time[i] = list.get(i).getValue().get(2);
-        }
-        display_list.putExtra("Names", names_list);
-        display_list.putExtra("Travels", travel_time);
-        display_list.putExtra("Waits", wait_time);
-        display_list.putExtra("Totals", total_time);
-// Invoke .shutdown() after your application is done making requests
-        startActivity(display_list);
-        return null;
+        return list;
     }
-    public void onPostExecute(Object[] params) {
-        doInBackground(params);
-    }
-
-    public void onCreate() {
-
+    public List<Map.Entry<String, ArrayList<Integer>>> onPostExecute(Object[] params) {
+        return doInBackground(params);
     }
 
 }
