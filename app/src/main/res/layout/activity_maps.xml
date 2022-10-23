@@ -6,27 +6,43 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context=".MapsActivity">
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="51dp"
+        android:text="Button" />
+
     <LinearLayout android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/linearLayout"
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <ImageButton
-            android:id="@+id/hospital"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/BuTTON"
-            android:padding="30dp"
-            android:src="@drawable/ic_baseline_local_hospital_24" />
-    </LinearLayout>
-<androidx.fragment.app.FragmentContainerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    class="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    />
 
+    </LinearLayout>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <EditText
+        android:id='@+id/radiusInputText'
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="149dp"
+        android:layout_marginBottom="52dp"
+        android:hint="Enter Radius (miles)"
+        android:backgroundTint="@android:color/black"
+        android:shadowColor="@color/black"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
 </RelativeLayout>
