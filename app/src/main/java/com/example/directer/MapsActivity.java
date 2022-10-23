@@ -11,6 +11,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -43,6 +44,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.maps.errors.ApiException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -122,7 +127,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             int r = Integer.valueOf(radiusTextString);
                             if (r > 0 && r <=30) {
                                 Object[] params = {latitude, longitude, r};
-                                a.onPostExecute(params);
+                                List<Map.Entry<String, ArrayList<Integer>>> list = a.onPostExecute(params);
+                                Intent display_list = new Intent(MapsActivity.this, Hospital_Lister.class);
+                                String[] names_list = new String[list.size()];
+                                int[] travel_time = new int[list.size()];
+                                int[] wait_time = new int[list.size()];
+                                int[] total_time = new int[list.size()];
+                                for (int i = 0; i < list.size(); i++) {
+                                    names_list[i] = list.get(i).getKey();
+                                    travel_time[i] = list.get(i).getValue().get(0);
+                                    wait_time[i] = list.get(i).getValue().get(1);
+                                    total_time[i] = list.get(i).getValue().get(2);
+                                }
+                                display_list.putExtra("Names", names_list);
+                                display_list.putExtra("Travels", travel_time);
+                                display_list.putExtra("Waits", wait_time);
+                                display_list.putExtra("Totals", total_time);
+                                startActivity(display_list);
+
                             } else {
                                 AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this).create();
                                 alertDialog.setTitle("Invalid");
