@@ -69,19 +69,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15, 0, mLocationListener);
 
-        /*
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            current_loc[0] = location;
-                        }
-                    }
-                });
-
-         */
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
         mapsApi a = new mapsApi();
@@ -137,20 +124,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                Toast.makeText(getApplicationContext(), "location result is=" + locationResult
-                        , Toast.LENGTH_LONG).show();
-
                 if (locationResult == null) {
-
-                    Toast.makeText(getApplicationContext(), "Current location is null"
-                            , Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
-                        Toast.makeText(getApplicationContext(), "Current result is=" + location.getLongitude()
-                                , Toast.LENGTH_LONG).show();
                     }
                 }
 
