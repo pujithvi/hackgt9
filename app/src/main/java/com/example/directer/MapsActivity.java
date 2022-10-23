@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.text.Editable;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.StrictMode;
 
@@ -60,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double lat, lng;
     private Button submitButton;
     private EditText radiusInput;
+    private TextView instructions;
 
 
 
@@ -111,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         submitButton = findViewById(R.id.button2);
         radiusInput = findViewById(R.id.radiusInputText);
+        instructions = findViewById(R.id.instructions);
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
