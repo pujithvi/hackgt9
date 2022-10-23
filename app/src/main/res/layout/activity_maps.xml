@@ -45,4 +45,21 @@
         android:shadowColor="@color/black"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="340dp"
+        android:layout_height="95dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="560dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="Enter Search Radius for Nearby Hospitals"
+        android:textColor="@color/black"
+        android:textSize="60px" />
+
+
 </RelativeLayout>

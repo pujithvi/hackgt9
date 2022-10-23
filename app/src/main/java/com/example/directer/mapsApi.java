@@ -89,7 +89,7 @@ public class mapsApi extends AsyncTask {
                 System.out.println("Finished place: " + p.name);
             } catch (Exception e) {
                 System.out.println(e);
-                System.out.println("Distance Matrix Calculation Failed.");
+
             }
 
 
