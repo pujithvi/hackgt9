@@ -11,6 +11,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,13 +51,15 @@ public class mapsApi extends AppCompatActivity{
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
     }
     public List<Map.Entry<String, ArrayList<Object>>> doInBackground (Object[] params) {
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyD0e_AjT0xXkIjPu3VswknGPL62DVSp4oI")
                 .build();
         LatLng current_loc = new LatLng(MapsActivity.latitude, MapsActivity.longitude);
-        System.out.println("Lat: " + current_loc.lat + " Long: " + current_loc.lng);
         Integer radius = ((Integer) params[2]) * 1600;
         ArrayList<PlacesSearchResult> places = new ArrayList<PlacesSearchResult>();
         NearbySearchRequest search_results = PlacesApi.nearbySearchQuery(context, current_loc).radius(radius);
@@ -67,7 +71,6 @@ public class mapsApi extends AppCompatActivity{
             System.out.println("Search Request Failed.");
         }
         HashMap<String, ArrayList<Object>> times_map = new HashMap<String, ArrayList<Object>>();
-        System.out.println("Places: " + places.size());
         for (PlacesSearchResult p : places) {
             try{
                 boolean openNow = p.openingHours.openNow;
@@ -84,7 +87,7 @@ public class mapsApi extends AppCompatActivity{
                     for (DistanceMatrixElement ele : row.elements) {
                         System.out.println(ele.duration.humanReadable);
                         int travelTime = Integer.parseInt(ele.duration.humanReadable.split(" ")[0]);
-                        int waitTime = (int) (Math.random() * 25) + 1;
+                        int waitTime = (int) (Math.random() * 30) + 20;
                         ArrayList<Object> data = new ArrayList<>();
                         data.add(travelTime);
                         data.add(waitTime);
