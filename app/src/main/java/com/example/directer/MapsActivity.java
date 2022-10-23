@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -111,12 +113,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (radiusTextString != null && radiusTextString != "") {
                         try {
                             int r = Integer.valueOf(radiusTextString);
-                            Object[] params = {latitude, longitude, 30};
-                            a.onPostExecute(params);
+                            if (r > 0 && r <=30) {
+                                Object[] params = {latitude, longitude, r};
+                                a.onPostExecute(params);
+                            } else {
+                                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this).create();
+                                alertDialog.setTitle("Invalid");
+                                alertDialog.setMessage("Please Enter a Valid Number");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                alertDialog.show();
+                                //add else and another alert dialog
+                            }
                             //System.out.println(r);
                         } catch (NumberFormatException e) {
                             System.out.println(e);
-                            //notify user with toast/alert
+                            AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this).create();
+                            alertDialog.setTitle("Invalid");
+                            alertDialog.setMessage("Please Enter a Valid Number");
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                            alertDialog.show();
                         }
                     }
                 }
