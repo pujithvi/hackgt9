@@ -3,6 +3,7 @@ package com.example.directer;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,8 +24,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
         mapsApi a = new mapsApi();
-        a.doInBackground(null);
+        a.onPostExecute();
         System.out.println("here");
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

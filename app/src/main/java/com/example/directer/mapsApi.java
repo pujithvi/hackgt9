@@ -32,7 +32,7 @@ public class mapsApi extends AsyncTask {
         return null;
     }
     public void onPostExecute() {
-
+        doInBackground(null);
     }
 
 
