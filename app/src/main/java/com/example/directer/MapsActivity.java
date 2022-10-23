@@ -11,6 +11,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.directer.databinding.ActivityMapsBinding;
+import com.google.maps.errors.ApiException;
+
+import java.io.IOException;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -20,7 +23,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mapsApi a = new mapsApi();
+        a.doInBackground(null);
+        System.out.println("here");
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
