@@ -4,6 +4,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,6 +12,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -42,8 +44,9 @@ import java.security.KeyException;
 import java.util.*;
 
 
-public class mapsApi extends AsyncTask {
+public class mapsApi extends AppCompatActivity {
 
+    private List<Map.Entry<String, ArrayList<Integer>>> list;
     public Object doInBackground (Object[] params) {
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyD0e_AjT0xXkIjPu3VswknGPL62DVSp4oI")
@@ -77,7 +80,7 @@ public class mapsApi extends AsyncTask {
                 for (DistanceMatrixRow row : dist.rows) {
                     for (DistanceMatrixElement ele : row.elements) {
                         System.out.println(ele.duration.humanReadable);
-                        int travelTime = Integer.valueOf(ele.duration.humanReadable.split(" ")[0]);
+                        int travelTime = Integer.parseInt(ele.duration.humanReadable.split(" ")[0]);
                         int waitTime = (int) (Math.random() * 25) + 1;
                         ArrayList<Integer> times = new ArrayList<>();
                         times.add(travelTime);
@@ -97,18 +100,36 @@ public class mapsApi extends AsyncTask {
         }
         List<Map.Entry<String, ArrayList<Integer>>> list = new LinkedList<>(times_map.entrySet());
         Collections.sort(list, (l1, l2) -> l1.getValue().get(2).compareTo(l2.getValue().get(2)));
+        this.list = list;
         for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i));
         }
-
-
-// Invoke .shutdown() after your application is done making requests
         context.shutdown();
+        Intent display_list = new Intent(this, Hospital_Lister.class);
+        String[] names_list = new String[list.size()];
+        int[] travel_time = new int[list.size()];
+        int[] wait_time = new int[list.size()];
+        int[] total_time = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            names_list[i] = list.get(i).getKey();
+            travel_time[i] = list.get(i).getValue().get(0);
+            wait_time[i] = list.get(i).getValue().get(1);
+            total_time[i] = list.get(i).getValue().get(2);
+        }
+        display_list.putExtra("Names", names_list);
+        display_list.putExtra("Travels", travel_time);
+        display_list.putExtra("Waits", wait_time);
+        display_list.putExtra("Totals", total_time);
+// Invoke .shutdown() after your application is done making requests
+        startActivity(display_list);
         return null;
     }
     public void onPostExecute(Object[] params) {
         doInBackground(params);
     }
 
+    public void onCreate() {
+
+    }
 
 }
