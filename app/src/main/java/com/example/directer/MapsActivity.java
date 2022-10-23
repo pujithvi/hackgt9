@@ -57,7 +57,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Location[] current_loc = new Location[1];
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         if(permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -73,20 +72,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         StrictMode.setThreadPolicy(gfgPolicy);
         mapsApi a = new mapsApi();
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        Object[] params = {latitude, longitude, 30};
-        a.onPostExecute(params);
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        if (location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            Object[] params = {latitude, longitude, 30};
+            a.onPostExecute(params);
+            binding = ActivityMapsBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
 
-        fusedLocationProviderClient=
-                LocationServices.getFusedLocationProviderClient(this.getApplicationContext());
+            fusedLocationProviderClient=
+                    LocationServices.getFusedLocationProviderClient(this.getApplicationContext());
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+
+        } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+        }
+
     }
 
 
@@ -104,7 +109,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-       getCurrentLocation();}
+       getCurrentLocation();
+    }
 
     private void getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -124,12 +130,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onLocationResult(LocationResult locationResult) {
+
+
                 if (locationResult == null) {
+
+
                     return;
                 }
 
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
+
                     }
                 }
 
@@ -142,10 +153,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onSuccess(Location location) {
                 if(location != null){
-                   lat = location.getLatitude();
-                   lng = location.getLongitude();
+                   latitude = location.getLatitude();
+                   longitude = location.getLongitude();
 
-                   LatLng latLng = new LatLng(lat, lng);
+                   LatLng latLng = new LatLng(latitude, longitude);
                    mMap.addMarker(new MarkerOptions().position(latLng).title("current location"));
                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
