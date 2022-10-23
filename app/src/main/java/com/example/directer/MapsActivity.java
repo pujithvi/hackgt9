@@ -9,10 +9,15 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.os.StrictMode;
 
@@ -30,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.directer.databinding.ActivityMapsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.maps.errors.ApiException;
 
 
@@ -42,6 +48,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int Request_code= 101;
     private double lat, lng;
+    private Button submitButton;
+    private EditText radiusInput;
+
 
 
     private final LocationListener mLocationListener = new LocationListener() {
@@ -75,8 +84,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (location != null) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
-            Object[] params = {latitude, longitude, 30};
-            a.onPostExecute(params);
             binding = ActivityMapsBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
 
@@ -91,6 +98,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
         }
+        submitButton = findViewById(R.id.button2);
+        radiusInput = findViewById(R.id.radiusInputText);
+
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Editable radiusText = radiusInput.getText();
+                if (radiusText != null) {
+                    String radiusTextString = radiusText.toString();
+                    if (radiusTextString != null && radiusTextString != "") {
+                        try {
+                            int r = Integer.valueOf(radiusTextString);
+                            Object[] params = {latitude, longitude, 30};
+                            a.onPostExecute(params);
+                            //System.out.println(r);
+                        } catch (NumberFormatException e) {
+                            System.out.println(e);
+                            //notify user with toast/alert
+                        }
+                    }
+                }
+            }
+        });
 
     }
 
