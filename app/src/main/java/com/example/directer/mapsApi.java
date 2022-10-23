@@ -47,11 +47,10 @@ import java.util.*;
 
 public class mapsApi extends AppCompatActivity{
 
-    private List<Map.Entry<String, ArrayList<Integer>>> list;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    public List<Map.Entry<String, ArrayList<Integer>>> doInBackground (Object[] params) {
+    public List<Map.Entry<String, ArrayList<Object>>> doInBackground (Object[] params) {
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyD0e_AjT0xXkIjPu3VswknGPL62DVSp4oI")
                 .build();
@@ -67,7 +66,7 @@ public class mapsApi extends AppCompatActivity{
         } catch (Exception e) {
             System.out.println("Search Request Failed.");
         }
-        HashMap<String, ArrayList<Integer>> times_map = new HashMap<String, ArrayList<Integer>>();
+        HashMap<String, ArrayList<Object>> times_map = new HashMap<String, ArrayList<Object>>();
         System.out.println("Places: " + places.size());
         for (PlacesSearchResult p : places) {
             try{
@@ -86,11 +85,12 @@ public class mapsApi extends AppCompatActivity{
                         System.out.println(ele.duration.humanReadable);
                         int travelTime = Integer.parseInt(ele.duration.humanReadable.split(" ")[0]);
                         int waitTime = (int) (Math.random() * 25) + 1;
-                        ArrayList<Integer> times = new ArrayList<>();
-                        times.add(travelTime);
-                        times.add(waitTime);
-                        times.add(travelTime + waitTime);
-                        times_map.put(p.name, times);
+                        ArrayList<Object> data = new ArrayList<>();
+                        data.add(travelTime);
+                        data.add(waitTime);
+                        data.add(travelTime + waitTime);
+                        data.add(location);
+                        times_map.put(p.name, data);
                     }
                 }
                 System.out.println("Finished place: " + p.name);
@@ -102,16 +102,15 @@ public class mapsApi extends AppCompatActivity{
 
             //times_map.put(p.name, )
         }
-        List<Map.Entry<String, ArrayList<Integer>>> list = new LinkedList<>(times_map.entrySet());
-        Collections.sort(list, (l1, l2) -> l1.getValue().get(2).compareTo(l2.getValue().get(2)));
-        this.list = list;
-        for (int i = 0; i < list.size(); i++) {
+        List<Map.Entry<String, ArrayList<Object>>> list = new LinkedList<>(times_map.entrySet());
+        Collections.sort(list, Comparator.comparing(l -> ((Integer) l.getValue().get(2))));
+        /**for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i));
-        }
+        }*/
         context.shutdown();
         return list;
     }
-    public List<Map.Entry<String, ArrayList<Integer>>> onPostExecute(Object[] params) {
+    public List<Map.Entry<String, ArrayList<Object>>> onPostExecute(Object[] params) {
         return doInBackground(params);
     }
 

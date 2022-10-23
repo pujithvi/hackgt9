@@ -3,6 +3,7 @@ package com.example.directer;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -24,10 +25,14 @@ public class Hospital_Lister extends AppCompatActivity {
         LinearLayout main_vert = findViewById(R.id.vert_layout);
         Intent display_list = getIntent();
         Bundle data = display_list.getExtras();
+
         String[] names_list = (String[]) data.get("Names");
         int[] travel_time = (int[]) data.get("Travels");
         int[] wait_times =  (int[]) data.get("Waits");
         int[] total_times = (int[]) data.get("Totals");
+        double[] longitudes = (double[]) data.get("Longitudes");
+        double[] latitudes = (double[]) data.get("Latitudes");
+
         for (int i = 0; i < names_list.length; i++) {
             LinearLayout new_hospital = new LinearLayout(Hospital_Lister.this);
             new_hospital.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 300));
@@ -68,7 +73,11 @@ public class Hospital_Lister extends AppCompatActivity {
             new_hospital.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitudes[v.getId()] + "," + longitudes[v.getId()]);
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                    System.exit(0);
                 }
             });
 

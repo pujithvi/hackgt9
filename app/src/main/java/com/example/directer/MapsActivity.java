@@ -127,22 +127,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             int r = Integer.valueOf(radiusTextString);
                             if (r > 0 && r <=30) {
                                 Object[] params = {latitude, longitude, r};
-                                List<Map.Entry<String, ArrayList<Integer>>> list = a.onPostExecute(params);
+                                List<Map.Entry<String, ArrayList<Object>>> list = a.onPostExecute(params);
                                 Intent display_list = new Intent(MapsActivity.this, Hospital_Lister.class);
                                 String[] names_list = new String[list.size()];
                                 int[] travel_time = new int[list.size()];
                                 int[] wait_time = new int[list.size()];
                                 int[] total_time = new int[list.size()];
+                                double[] longitudes = new double[list.size()];
+                                double[] latitudes = new double[list.size()];
                                 for (int i = 0; i < list.size(); i++) {
                                     names_list[i] = list.get(i).getKey();
-                                    travel_time[i] = list.get(i).getValue().get(0);
-                                    wait_time[i] = list.get(i).getValue().get(1);
-                                    total_time[i] = list.get(i).getValue().get(2);
+                                    travel_time[i] = (Integer)list.get(i).getValue().get(0);
+                                    wait_time[i] = (Integer)list.get(i).getValue().get(1);
+                                    total_time[i] = (Integer)list.get(i).getValue().get(2);
+                                    longitudes[i] = ((com.google.maps.model.LatLng)list.get(i).getValue().get(3)).lng;
+                                    latitudes[i] = ((com.google.maps.model.LatLng)list.get(i).getValue().get(3)).lat;
                                 }
                                 display_list.putExtra("Names", names_list);
                                 display_list.putExtra("Travels", travel_time);
                                 display_list.putExtra("Waits", wait_time);
                                 display_list.putExtra("Totals", total_time);
+                                display_list.putExtra("Longitudes", longitudes);
+                                display_list.putExtra("Latitudes", latitudes);
                                 startActivity(display_list);
 
                             } else {
