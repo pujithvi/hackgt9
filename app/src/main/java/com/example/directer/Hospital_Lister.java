@@ -4,6 +4,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +48,9 @@ public class Hospital_Lister extends AppCompatActivity {
             new_hospital.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 300));
             new_hospital.setOrientation(LinearLayout.VERTICAL);
             new_hospital.setId(i);
+            if (i % 2 == 0) {
+                new_hospital.setBackgroundColor(Color.GRAY);
+            }
             Typeface NOVA = getResources().getFont(R.font.nova_alt_light);
             main_vert.addView(new_hospital);
             TextView name = new TextView(this);
@@ -56,12 +60,12 @@ public class Hospital_Lister extends AppCompatActivity {
             name.setHorizontallyScrolling(false);
             name.setTextSize(15);
             name.setGravity(Gravity.LEFT);
-            name.setPadding(40, 0, 0, 25);
+            name.setPadding(40, 25, 0, 10);
             new_hospital.addView(name);
             LinearLayout times = new LinearLayout(Hospital_Lister.this);
             times.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 100));
             times.setOrientation(LinearLayout.HORIZONTAL);
-            times.setPadding(0, 0, 0, 25);
+            times.setPadding(0, 15, 0, 0);
             TextView travel = new TextView(this);
             travel.setText("Travel time: " + String.valueOf(travel_time[i]) + " min ");
             travel.setTextSize(10);
